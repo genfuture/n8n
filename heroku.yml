@@ -1,5 +1,4 @@
 build:
   docker:
     web: heroku/Dockerfile   # Dockerfile lives in heroku/ sub-directory
-run:
-  web: ""                    # ENTRYPOINT is set inside the Dockerfile
+# No run section needed — ENTRYPOINT is defined in the Dockerfile
