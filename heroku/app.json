@@ -1,0 +1,78 @@
+{
+  "name": "n8n (with persistent community nodes)",
+  "description": "Self-hosted n8n workflow automation with community nodes baked into the image so they survive Heroku dyno restarts.",
+  "repository": "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME",
+  "logo": "https://n8n.io/n8n-logo.png",
+  "keywords": ["n8n", "automation", "workflow"],
+  "stack": "container",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [],
+  "env": {
+    "N8N_ENCRYPTION_KEY": {
+      "description": "Secret key used to encrypt credentials in the database. Generate one with: openssl rand -hex 32",
+      "required": true,
+      "generator": "secret"
+    },
+    "N8N_BASIC_AUTH_ACTIVE": {
+      "description": "Enable basic auth login (true/false)",
+      "value": "false"
+    },
+    "N8N_BASIC_AUTH_USER": {
+      "description": "Username for basic auth (only needed if N8N_BASIC_AUTH_ACTIVE=true)",
+      "required": false
+    },
+    "N8N_BASIC_AUTH_PASSWORD": {
+      "description": "Password for basic auth (only needed if N8N_BASIC_AUTH_ACTIVE=true)",
+      "required": false
+    },
+    "DB_TYPE": {
+      "description": "Database type. Use 'sqlite' for quick start or 'postgresdb' for persistent storage.",
+      "value": "sqlite"
+    },
+    "DB_POSTGRESDB_DATABASE": {
+      "description": "PostgreSQL database name (only if DB_TYPE=postgresdb)",
+      "required": false
+    },
+    "DB_POSTGRESDB_HOST": {
+      "description": "PostgreSQL host (only if DB_TYPE=postgresdb)",
+      "required": false
+    },
+    "DB_POSTGRESDB_PORT": {
+      "description": "PostgreSQL port (only if DB_TYPE=postgresdb)",
+      "value": "5432",
+      "required": false
+    },
+    "DB_POSTGRESDB_USER": {
+      "description": "PostgreSQL user (only if DB_TYPE=postgresdb)",
+      "required": false
+    },
+    "DB_POSTGRESDB_PASSWORD": {
+      "description": "PostgreSQL password (only if DB_TYPE=postgresdb)",
+      "required": false
+    },
+    "DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED": {
+      "description": "Set to false when using Heroku Postgres (self-signed cert)",
+      "value": "false",
+      "required": false
+    },
+    "WEBHOOK_URL": {
+      "description": "Public URL of your Heroku app, e.g. https://my-n8n.herokuapp.com/  Required for webhooks to work.",
+      "required": false
+    },
+    "N8N_PROTOCOL": {
+      "description": "Protocol n8n uses (set to https for Heroku)",
+      "value": "https"
+    },
+    "NODE_FUNCTION_ALLOW_EXTERNAL": {
+      "description": "Comma-separated list of npm packages allowed in Function nodes, or * for all",
+      "value": "*"
+    }
+  },
+  "image": "heroku/container",
+  "buildpacks": []
+}

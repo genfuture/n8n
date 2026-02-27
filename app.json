@@ -1,0 +1,82 @@
+{
+  "name": "n8n (with persistent community nodes)",
+  "description": "Self-hosted n8n workflow automation with community nodes baked into the image so they survive Heroku dyno restarts.",
+  "repository": "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME",
+  "logo": "https://n8n.io/n8n-logo.png",
+  "keywords": ["n8n", "automation", "workflow"],
+  "stack": "container",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0",
+      "as": "DATABASE"
+    }
+  ],
+  "env": {
+    "N8N_ENCRYPTION_KEY": {
+      "description": "Secret key used to encrypt credentials. Auto-generated for you.",
+      "required": true,
+      "generator": "secret"
+    },
+    "DB_TYPE": {
+      "description": "Database type — set to postgresdb to use the Heroku Postgres add-on above.",
+      "value": "postgresdb"
+    },
+    "DB_POSTGRESDB_DATABASE": {
+      "description": "PostgreSQL database name (from DATABASE_URL — fill after provisioning).",
+      "required": false
+    },
+    "DB_POSTGRESDB_HOST": {
+      "description": "PostgreSQL host (from DATABASE_URL — fill after provisioning).",
+      "required": false
+    },
+    "DB_POSTGRESDB_PORT": {
+      "description": "PostgreSQL port.",
+      "value": "5432",
+      "required": false
+    },
+    "DB_POSTGRESDB_USER": {
+      "description": "PostgreSQL user (from DATABASE_URL — fill after provisioning).",
+      "required": false
+    },
+    "DB_POSTGRESDB_PASSWORD": {
+      "description": "PostgreSQL password (from DATABASE_URL — fill after provisioning).",
+      "required": false
+    },
+    "DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED": {
+      "description": "Must be false for Heroku Postgres (uses self-signed cert).",
+      "value": "false"
+    },
+    "WEBHOOK_URL": {
+      "description": "Public HTTPS URL of this app (e.g. https://my-n8n.herokuapp.com/). Required for webhooks.",
+      "required": false
+    },
+    "N8N_PROTOCOL": {
+      "description": "Protocol n8n advertises. Keep as https on Heroku.",
+      "value": "https"
+    },
+    "NODE_FUNCTION_ALLOW_EXTERNAL": {
+      "description": "npm packages usable in Function nodes. * = allow all.",
+      "value": "*"
+    },
+    "N8N_BASIC_AUTH_ACTIVE": {
+      "description": "Enable username/password login (true/false).",
+      "value": "false"
+    },
+    "N8N_BASIC_AUTH_USER": {
+      "description": "Username (only used when N8N_BASIC_AUTH_ACTIVE=true).",
+      "required": false
+    },
+    "N8N_BASIC_AUTH_PASSWORD": {
+      "description": "Password (only used when N8N_BASIC_AUTH_ACTIVE=true).",
+      "required": false
+    }
+  },
+  "image": "heroku/container",
+  "buildpacks": []
+}

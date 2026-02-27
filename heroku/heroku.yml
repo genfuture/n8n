@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: heroku/Dockerfile   # path relative to repo root
+run:
+  web: ""                    # entrypoint/CMD already set in Dockerfile
