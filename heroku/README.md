@@ -65,6 +65,10 @@ heroku stack:set container -a my-n8n-app
 # Mandatory
 heroku config:set N8N_ENCRYPTION_KEY="$(openssl rand -hex 32)" -a my-n8n-app
 
+# Timezone — set both so cron triggers fire at the right local time
+# Use any TZ database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+heroku config:set GENERIC_TIMEZONE="America/New_York" TZ="America/New_York" -a my-n8n-app
+
 # Highly recommended — enables webhooks
 heroku config:set WEBHOOK_URL="https://my-n8n-app.herokuapp.com/" -a my-n8n-app
 

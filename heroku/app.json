@@ -71,6 +71,14 @@
     "NODE_FUNCTION_ALLOW_EXTERNAL": {
       "description": "Comma-separated list of npm packages allowed in Function nodes, or * for all",
       "value": "*"
+    },
+    "GENERIC_TIMEZONE": {
+      "description": "Timezone used by n8n for schedule/cron triggers. Use a TZ database name, e.g. America/New_York, Europe/London, Asia/Tokyo. Defaults to UTC.",
+      "value": "UTC"
+    },
+    "TZ": {
+      "description": "System/Node.js timezone. Should match GENERIC_TIMEZONE.",
+      "value": "UTC"
     }
   },
   "image": "heroku/container",

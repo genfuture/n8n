@@ -64,6 +64,14 @@
       "description": "npm packages usable in Function nodes. * = allow all.",
       "value": "*"
     },
+    "GENERIC_TIMEZONE": {
+      "description": "Timezone used by n8n for schedule/cron triggers. Use a TZ database name, e.g. America/New_York, Europe/London, Asia/Tokyo. Defaults to UTC.",
+      "value": "UTC"
+    },
+    "TZ": {
+      "description": "System/Node.js timezone. Should match GENERIC_TIMEZONE.",
+      "value": "UTC"
+    },
     "N8N_BASIC_AUTH_ACTIVE": {
       "description": "Enable username/password login (true/false).",
       "value": "false"

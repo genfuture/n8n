@@ -14,6 +14,11 @@ fi
 # Forward Heroku's dynamic $PORT to n8n
 export N8N_PORT="${PORT:-5678}"
 
+# Timezone — set GENERIC_TIMEZONE + TZ via Heroku config vars.
+# Fall back to UTC if neither is provided.
+export GENERIC_TIMEZONE="${GENERIC_TIMEZONE:-UTC}"
+export TZ="${TZ:-$GENERIC_TIMEZONE}"
+
 # Heroku uses HTTPS in front of the dyno; tell n8n it is behind a proxy
 export N8N_PROTOCOL="${N8N_PROTOCOL:-https}"
 export WEBHOOK_URL="${WEBHOOK_URL:-}"
