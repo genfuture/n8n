@@ -9,12 +9,17 @@ FROM n8nio/n8n:latest
 USER root
 
 # ─── Pre-install community nodes ─────────────────────────────────────────────
-# These are baked into the image and will NOT be lost on dyno restart.
-# Add/remove packages on this line as needed:
-RUN cd /usr/local/lib/node_modules/n8n && \
-    npm install --save \
+# n8n loads community nodes from ~/.n8n/nodes/ (the user data folder).
+# Installing there avoids touching n8n's own package.json (which uses pnpm
+# catalog: URLs that npm cannot resolve).
+# Add/remove packages on the npm install line as needed.
+RUN mkdir -p /home/node/.n8n/nodes && \
+    cd /home/node/.n8n/nodes && \
+    npm init -y && \
+    npm install \
       @apify/n8n-nodes-apify \
-    && rm -rf /root/.npm /tmp/*
+    && chown -R node:node /home/node/.n8n && \
+    rm -rf /root/.npm /tmp/*
 
 # ─── Runtime environment wiring ───────────────────────────────────────────────
 # Tell n8n where to find any additional external packages you install here.

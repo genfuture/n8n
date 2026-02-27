@@ -36,11 +36,14 @@ heroku container:login
 Open [heroku/Dockerfile](./Dockerfile) and edit the `npm install` line:
 
 ```dockerfile
-RUN cd /usr/local/lib/node_modules/n8n && \
-    npm install --save \
+RUN mkdir -p /home/node/.n8n/nodes && \
+    cd /home/node/.n8n/nodes && \
+    npm init -y && \
+    npm install \
       @apify/n8n-nodes-apify \
       n8n-nodes-browserless \    # ← add more here
-    && rm -rf /root/.npm /tmp/*
+    && chown -R node:node /home/node/.n8n && \
+    rm -rf /root/.npm /tmp/*
 ```
 
 ### 3. Copy Heroku config to repo root
