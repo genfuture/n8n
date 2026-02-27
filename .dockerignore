@@ -26,6 +26,10 @@
 !docker/images/runners
 !docker/images/runners/n8n-task-runners.json
 
+# === Heroku deployment ===
+!heroku
+!heroku/**
+
 # === benchmark image (packages/@n8n/benchmark/Dockerfile) ===
 !package.json
 !pnpm-lock.yaml
