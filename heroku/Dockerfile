@@ -35,9 +35,20 @@ ENV N8N_RUNNERS_ENABLED=true
 USER node
 
 ENTRYPOINT []
+# Heroku Postgres provides DATABASE_URL — parse it into the individual vars n8n needs.
+# Falls back to SQLite if DATABASE_URL is not set.
 CMD export N8N_PORT=${PORT:-5678} \
  && export GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-UTC} \
  && export TZ=${TZ:-${GENERIC_TIMEZONE:-UTC}} \
  && export N8N_PROTOCOL=${N8N_PROTOCOL:-https} \
- && echo "Starting n8n on port $N8N_PORT..." \
+ && if [ -n "$DATABASE_URL" ]; then \
+      export DB_TYPE=postgresdb ; \
+      export DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED=false ; \
+      export DB_POSTGRESDB_HOST=$(echo "$DATABASE_URL" | sed -E 's|postgres(ql)?://[^:]+:[^@]+@([^:/]+).*|\2|') ; \
+      export DB_POSTGRESDB_PORT=$(echo "$DATABASE_URL" | sed -E 's|postgres(ql)?://[^@]+@[^:]+:([0-9]+).*|\2|') ; \
+      export DB_POSTGRESDB_DATABASE=$(echo "$DATABASE_URL" | sed -E 's|.*/([^?]+).*|\1|') ; \
+      export DB_POSTGRESDB_USER=$(echo "$DATABASE_URL" | sed -E 's|postgres(ql)?://([^:]+):.*|\2|') ; \
+      export DB_POSTGRESDB_PASSWORD=$(echo "$DATABASE_URL" | sed -E 's|postgres(ql)?://[^:]+:([^@]+)@.*|\2|') ; \
+    fi \
+ && echo "Starting n8n on port $N8N_PORT (DB_TYPE=${DB_TYPE:-sqlite})..." \
  && exec n8n
