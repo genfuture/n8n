@@ -30,8 +30,23 @@ ENV N8N_RUNNERS_ENABLED=true
 
 # Heroku assigns a dynamic port via $PORT – the entrypoint script below
 # forwards it to n8n's listener.
-COPY heroku/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# ─── Entrypoint (written inline — avoids any .dockerignore COPY issues) ───────
+RUN printf '%s\n' \
+  '#!/bin/sh' \
+  'if [ -d /opt/custom-certificates ]; then' \
+  '  echo "Trusting custom certificates from /opt/custom-certificates."' \
+  '  export NODE_OPTIONS="--use-openssl-ca $NODE_OPTIONS"' \
+  '  export SSL_CERT_DIR=/opt/custom-certificates' \
+  '  c_rehash /opt/custom-certificates' \
+  'fi' \
+  'export N8N_PORT="${PORT:-5678}"' \
+  'export GENERIC_TIMEZONE="${GENERIC_TIMEZONE:-UTC}"' \
+  'export TZ="${TZ:-$GENERIC_TIMEZONE}"' \
+  'export N8N_PROTOCOL="${N8N_PROTOCOL:-https}"' \
+  'export WEBHOOK_URL="${WEBHOOK_URL:-}"' \
+  'echo "Starting n8n on port $N8N_PORT ..."' \
+  'if [ "$#" -gt 0 ]; then exec n8n "$@"; else exec n8n; fi' \
+  > /entrypoint.sh && chmod +x /entrypoint.sh
 
 USER node
 
