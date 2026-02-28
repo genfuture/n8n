@@ -30,9 +30,9 @@ ENV N8N_RUNNERS_ENABLED=true
 
 # Heroku assigns a dynamic port via $PORT – the entrypoint script below
 # forwards it to n8n's listener.
-COPY heroku/docker-entrypoint.heroku.sh /docker-entrypoint.heroku.sh
-RUN chmod +x /docker-entrypoint.heroku.sh
+COPY heroku/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 USER node
 
-ENTRYPOINT ["/docker-entrypoint.heroku.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
